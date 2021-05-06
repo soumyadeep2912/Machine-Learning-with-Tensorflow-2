@@ -63,10 +63,10 @@ class log_dataset:
     def load_data(self):
         X_train, X_test, y_train, y_test = train_test_split(
             self.X, self.y, test_size=0.2, random_state=101)
-        X_train = np.array(X_train)
-        X_test = np.array(X_test)
-        y_train = np.array(y_train)
-        y_test = np.array(y_test)
+        X_train = np.array(X_train,dtype=np.float32)
+        X_test = np.array(X_test,dtype=np.float32)
+        y_train = np.array(y_train,dtype=np.float32).reshape(-1,1)
+        y_test = np.array(y_test,dtype=np.float32).reshape(-1,1)
         return (X_train, y_train), (X_test, y_test) 
 
     def plot(self):
@@ -93,5 +93,5 @@ if __name__ == '__main__':
         'logistic_regression', plot=True)
     print("train_data shape {} test data shape {}".format(
         train_data.shape, test_data.shape))
-    print(train_data)
-    print(train_label, test_label)
+    print(train_data.shape,test_data.shape)
+    print(train_label.shape, test_label.shape)
