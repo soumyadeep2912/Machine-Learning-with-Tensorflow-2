@@ -21,8 +21,15 @@ Before trying, follow these steps:
       
       For Linear Regression:
       $ python3 linear_regression.py
+      
+      For Logistic Regression:
+      $ python3 logistic_regression.py
   
   
   # Windows:
+  
       For Linear Regression:
       $ python3 linear_regression.py
+      
+      For Logistic Regression:
+      $ python3 logistic_regression.py
