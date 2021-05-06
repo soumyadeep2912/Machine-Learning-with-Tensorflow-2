@@ -1,8 +1,13 @@
+import numpy as np
 import tensorflow.compat.v1 as tf
-import matplotlib.pyplot as plt	
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from sklearn.model_selection import train_test_split
+import pandas as pd
 
-#data
+# data
+
+
 class lg_dataset:
 
     def __init__(self):
@@ -47,9 +52,35 @@ class lg_dataset:
         plt.show()
 
 
+class log_dataset:
+    def __init__(self):
+        self.df = pd.read_csv('archive/candy-data.csv')
+        df1 = self.df.copy()
+        df1.drop("competitorname", axis=1, inplace=True)
+        self.X = df1.drop(["bar", "hard", "sugarpercent", "winpercent"], axis=1)
+        self.y = df1["bar"]
+
+    def load_data(self):
+        X_train, X_test, y_train, y_test = train_test_split(
+            self.X, self.y, test_size=0.2, random_state=101)
+        X_train = np.array(X_train)
+        X_test = np.array(X_test)
+        y_train = np.array(y_train)
+        y_test = np.array(y_test)
+        return (X_train, y_train), (X_test, y_test) 
+
+    def plot(self):
+        print(self.df.head())
+
+
 def load_data(dataset_name, plot=False):
     if dataset_name == 'linear_regression':
         __dataset = lg_dataset()
+        if plot:
+            __dataset.plot()
+        return __dataset.load_data()
+    elif dataset_name == 'logistic_regression':
+        __dataset = log_dataset()
         if plot:
             __dataset.plot()
         return __dataset.load_data()
@@ -59,7 +90,7 @@ def load_data(dataset_name, plot=False):
 
 if __name__ == '__main__':
     (train_data, train_label), (test_data, test_label) = load_data(
-        'linear_regression', plot=True)
+        'logistic_regression', plot=True)
     print("train_data shape {} test data shape {}".format(
         train_data.shape, test_data.shape))
     print(train_data)
