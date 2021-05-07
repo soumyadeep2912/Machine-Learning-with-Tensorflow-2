@@ -7,13 +7,11 @@ Before trying, follow these steps:
   Install the neccessary libraries and modules
    - Activate your virtualenv and run the following command in your terminal(LINUX) or cmd(WINDOWS)
  
-   $ python3 -m pip install numpy
-   
-   $ python3 -m pip install matplotlib
-   
-   $ python3 -m pip install tensorflow
-   
-   $ python3 -m pip install pandas
+      $ pip3 install tensorflow
+      $ pip3 install pandas
+      $ pip3 install numpy
+      $ pip3 install matplotlib
+      $ pip3 install sklearn
   
   -> Fire up your terminal/cmd
    
