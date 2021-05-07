@@ -16,7 +16,7 @@ Before trying, follow these steps:
       $ pip3 install sklearn
       
   ### Files:
-   ⚙️[Code | Linear Regression](machine_learning/linear_regression.py)
+   - ⚙️ [Code | Linear Regression](machine_learning/linear_regression.py)
   
   -> Fire up your terminal/cmd
    
