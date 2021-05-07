@@ -24,6 +24,9 @@ Before trying, follow these steps:
       
       For Logistic Regression:
       $ python3 logistic_regression.py
+      
+      For Neural Network:
+      $ python3 neural_network.py
   
   
   # Windows:
@@ -33,3 +36,6 @@ Before trying, follow these steps:
       
       For Logistic Regression:
       $ python3 logistic_regression.py
+      
+      For Neural Network:
+      $ python3 neural_network.py
