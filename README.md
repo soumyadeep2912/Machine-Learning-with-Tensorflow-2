@@ -17,7 +17,7 @@ Before trying, follow these steps:
   
   -> Fire up your terminal/cmd
    
-   # Linux :
+   # 🤖 Linux :
       
       For Linear Regression:
       $ python3 linear_regression.py
@@ -29,7 +29,7 @@ Before trying, follow these steps:
       $ python3 neural_network.py
   
   
-  # Windows:
+  # 🤖 Windows:
   
       For Linear Regression:
       $ python3 linear_regression.py
