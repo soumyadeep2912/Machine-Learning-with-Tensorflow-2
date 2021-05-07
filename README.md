@@ -18,6 +18,7 @@ Before trying, follow these steps:
   ### Files:
    - 📗 [Math | Linear Regression](machine_learning/docs/linear_regression.pdf)
    - ⚙️ [Code | Linear Regression](machine_learning/linear_regression.py)
+   - 📗 [Math | Logistic Regression](machine_learning/docs/logistic_regression.pdf)
    - ⚙️ [Code | Logistic Regression](machine_learning/logistic_regression.py)
    - ⚙️ [Code | Neural Network](machine_learning/neural_network.py)
   
