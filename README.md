@@ -20,7 +20,7 @@ Before trying, follow these steps:
    - ⚙️ [Code | Linear Regression](machine_learning/linear_regression.py)
    - 📗 [Math | Logistic Regression](machine_learning/docs/logistic_regression.pdf)
    - ⚙️ [Code | Logistic Regression](machine_learning/logistic_regression.py)
-   - 📗 [Math | Logistic Regression](machine_learning/docs/neural_network.pdf) work in progress
+   - 📗 [Math | Neural Network](machine_learning/docs/neural_network.pdf) work in progress
    - ⚙️ [Code | Neural Network](machine_learning/neural_network.py)
   
   -> Fire up your terminal/cmd
