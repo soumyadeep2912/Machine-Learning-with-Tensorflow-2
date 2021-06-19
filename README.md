@@ -20,6 +20,7 @@ Before trying, follow these steps:
    - ⚙️ [Code | Linear Regression](machine_learning/linear_regression.py)
    - 📗 [Math | Logistic Regression](machine_learning/docs/logistic_regression.pdf)
    - ⚙️ [Code | Logistic Regression](machine_learning/logistic_regression.py)
+   - ⚙️ [Code | Regularisation](machine_learning/regularisation.py)
    - 📗 [Math | Neural Network](machine_learning/docs/neural_network.pdf) 
    - ⚙️ [Code | Neural Network](machine_learning/neural_network.py)
   
@@ -32,6 +33,9 @@ Before trying, follow these steps:
       
       For Logistic Regression:
       $ python3 logistic_regression.py
+     
+      For Regularisation:
+      $ python3 regularisation.py
       
       For Neural Network:
       $ python3 neural_network.py
@@ -44,6 +48,9 @@ Before trying, follow these steps:
       
       For Logistic Regression:
       $ python3 logistic_regression.py
+      
+      For Regularisation:
+      $ python3 regularisation.py
       
       For Neural Network:
       $ python3 neural_network.py
