@@ -10,24 +10,28 @@ tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 
 class Classifier:
-    def __init__(self, train_data, train_labels, test_data, test_labels, epochs=2000, lr=0.21, features=500):
-        train_data = tf.cast(train_data, dtype=tf.float32)/255.0
-        self.train_data = tf.reshape(train_data, shape=(-1, 784))
+    def __init__(self, train_data, train_labels, test_data, test_labels, epochs=500000, features=500):
+
+        self.train_data = tf.cast(tf.reshape(
+            (train_data/255), shape=[-1, 28*28]), dtype=tf.float32)
+        self.test_data = tf.cast(tf.reshape(
+            (test_data/255), shape=[-1, 28*28]), dtype=tf.float32)
         self.train_labels = tf.one_hot(
             train_labels, depth=10, dtype=tf.float32)
-
-        test_data = tf.cast(test_data, dtype=tf.float32)/255.0
-        self.test_data = tf.reshape(test_data, shape=(-1, 784))
         self.test_labels = tf.one_hot(test_labels, depth=10, dtype=tf.float32)
 
         self.weights = tf.Variable(tf.random.normal(
-            shape=[784, 10], dtype=tf.float32))
+            shape=[784, 10], mean=0, stddev=1, seed=12, dtype=tf.float32))
         self.bias = tf.Variable(tf.random.normal(
-            shape=[10], dtype=tf.float32))
+            shape=[10], mean=0, stddev=1, seed=12, dtype=tf.float32))
+        self.activation = tfp.bijectors.NormalCDF()
+
+        self.best_weights = tf.Variable(self.weights, dtype=tf.float32)
+        self.best_bias = tf.Variable(self.bias, dtype=tf.float32)
 
         self.epochs = epochs
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
-        self.loss = tf.keras.losses.CategoricalCrossentropy()
+        self.optimizer = tf.keras.optimizers.Adam(epsilon=1e-5)
+        self.losses = tf.keras.losses.CategoricalCrossentropy()
         self.perceptron = self.pca(self.train_data, components=features)
 
     def pca(self, data, components=500):
@@ -37,71 +41,62 @@ class Classifier:
         return data
 
     @tf.function
+    def update_parameters(self, data, label):
+        def loss(): return self.losses(label, self.model(data))
+        self.optimizer.minimize(
+            loss, [self.weights, self.bias])
+
+    @tf.function
     def model(self, data):
         linear = tf.linalg.matmul(data, self.weights) + self.bias
-
-        mean = tf.math.reduce_mean(linear)
-        std = tf.math.reduce_std(linear)
-        x = (linear - mean) / (std * math.sqrt(2))
-        return 0.5*(1 + tf.math.erf(x))
+        return self.activation(linear)
+        # mean = tf.math.reduce_mean(linear)
+        # std = tf.math.reduce_std(linear)
+        # x = (linear - mean) / (std * math.sqrt(2))
+        # return 0.5*(1 + tf.math.erf(x))
 
     def train(self, plot=True):
-        training_loss = []
-        testing_loss = []
-        def loss(): return self.loss(label, self.model(data))  # + (0.1*(self.weights)**2)
+        decline = 0
+        prev_acc = 0
+
         while self.epochs != 0:
-            data = self.train_data
-            label = self.train_labels
-            training_loss.append(np.mean(loss()))
+            if decline > 8:
+                break
 
-            self.optimizer.minimize(loss, var_list=[
-                                    self.weights, self.bias])
+            self.update_parameters(self.train_data, self.train_labels)
+            if self.epochs % 100 == 0:
+                (train_loss, train_accuracy), (test_loss,
+                                               test_accuracy) = self.metrics()
+                acc = test_accuracy
 
-            if self.epochs % 10 == 0:
-                (train_accuracy, test_accuracy) = self.testing()
-                print('\r Training: {:.2f}% Testing: {:.2f}%  Epoch: {}'.format(
-                    train_accuracy, test_accuracy, self.epochs), end=' ')
+                if acc > prev_acc:
+                    self.best_weights.assign(self.weights)
+                    self.best_bias.assign(self.bias)
+                else:
+                    decline += 1
+
+                print('\r Training Accuracy: {:.2f}% Testing Accuracy: {:.2f}% Training Loss: {:.2f} Testing Loss: {:.2f} Epoch: {}'.format(
+                    train_accuracy*100, test_accuracy*100, train_loss, test_loss, self.epochs), end=' ')
                 sys.stdout.flush()
-
-            data = self.test_data
-            label = self.test_labels
-            testing_loss.append(np.mean(loss()))
+                prev_acc = acc
 
             self.epochs -= 1
 
-        if plot:
-            plt.plot(range(len(training_loss)), np.array(
-                training_loss), c='r', label='Training loss')
-            plt.plot(range(len(testing_loss)), np.array(
-                testing_loss), c='g', label='Testing Loss')
-            plt.xlabel('Epochs')
-            plt.ylabel('Loss')
-            plt.legend()
-            plt.show()
         print()
 
-    def testing(self):
-        train_predictions = np.argmax(self.model(self.train_data), axis=1)
-        test_predictions = np.argmax(self.model(self.test_data), axis=1)
+    @tf.function
+    def metrics(self):
+        train_predictions = self.model(self.train_data)
+        test_predictions = self.model(self.test_data)
 
-        train_truth = np.argmax(self.train_labels, axis=1)
-        test_truth = np.argmax(self.test_labels, axis=1)
+        train_loss = self.losses(self.train_labels, train_predictions)
+        test_loss = self.losses(self.test_labels, test_predictions)
 
-        count = 0
-        for ind, elem in enumerate(train_predictions):
-            if elem == train_truth[ind]:
-                count += 1
-
-        train_accuracy = (count/60000)*100
-
-        count = 0
-        for ind, elem in enumerate(test_predictions):
-            if elem == test_truth[ind]:
-                count += 1
-
-        test_accuracy = (count/10000)*100
-
-        return (train_accuracy, test_accuracy)
+        train_accuracy = tf.cast(tf.equal(tf.argmax(train_predictions, axis=1), tf.argmax(
+            self.train_labels, axis=1)), dtype=tf.float32)
+        test_accuracy = tf.cast(tf.equal(tf.argmax(test_predictions, axis=1), tf.argmax(
+            self.test_labels, axis=1)), dtype=tf.float32)
+        return (train_loss, tf.reduce_mean(train_accuracy)), (test_loss, tf.reduce_mean(test_accuracy))
 
 
 if __name__ == "__main__":
@@ -110,4 +105,4 @@ if __name__ == "__main__":
 
     classify = Classifier(train_data, train_labels, test_data, test_labels)
     classify.train()
-    classify.testing()
+    classify.metrics()
