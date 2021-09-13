@@ -10,7 +10,7 @@ tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 
 class Classifier:
-    def __init__(self, train_data, train_labels, test_data, test_labels, epochs=2000, lr=0.21,features = 500):
+    def __init__(self, train_data, train_labels, test_data, test_labels, epochs=2000, lr=0.21, features=500):
         train_data = tf.cast(train_data, dtype=tf.float32)/255.0
         self.train_data = tf.reshape(train_data, shape=(-1, 784))
         self.train_labels = tf.one_hot(
@@ -20,20 +20,20 @@ class Classifier:
         self.test_data = tf.reshape(test_data, shape=(-1, 784))
         self.test_labels = tf.one_hot(test_labels, depth=10, dtype=tf.float32)
 
-        self.weights = tf.Variable(tf.random.uniform(
-            shape=[784, 10],maxval = 1,minval = 0, dtype=tf.float32))
-        self.bias = tf.Variable(tf.random.uniform(
-            shape=[10],maxval = 1,minval = 0, dtype=tf.float32))
+        self.weights = tf.Variable(tf.random.normal(
+            shape=[784, 10], dtype=tf.float32))
+        self.bias = tf.Variable(tf.random.normal(
+            shape=[10], dtype=tf.float32))
 
         self.epochs = epochs
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
         self.loss = tf.keras.losses.CategoricalCrossentropy()
-        self.perceptron = self.pca(self.train_data,components = features)
+        self.perceptron = self.pca(self.train_data, components=features)
 
-    def pca(self,data,components= 500):
-        covar = tf.linalg.matmul(tf.transpose(data),data)
-        e,v = np.linalg.eig(covar)
-        data = tf.linalg.matmul(data,tf.transpose(v[:components]))
+    def pca(self, data, components=500):
+        covar = tf.linalg.matmul(tf.transpose(data), data)
+        e, v = np.linalg.eig(covar)
+        data = tf.linalg.matmul(data, tf.transpose(v[:components]))
         return data
 
     @tf.function
@@ -45,12 +45,11 @@ class Classifier:
         x = (linear - mean) / (std * math.sqrt(2))
         return 0.5*(1 + tf.math.erf(x))
 
-        
-    def train(self,plot = True):
+    def train(self, plot=True):
         training_loss = []
         testing_loss = []
-        loss = lambda: self.loss(label,self.model(data))  #+ (0.1*(self.weights)**2)
-        while self.epochs != 0 :
+        def loss(): return self.loss(label, self.model(data))  # + (0.1*(self.weights)**2)
+        while self.epochs != 0:
             data = self.train_data
             label = self.train_labels
             training_loss.append(np.mean(loss()))
@@ -64,7 +63,6 @@ class Classifier:
                     train_accuracy, test_accuracy, self.epochs), end=' ')
                 sys.stdout.flush()
 
-
             data = self.test_data
             label = self.test_labels
             testing_loss.append(np.mean(loss()))
@@ -72,8 +70,13 @@ class Classifier:
             self.epochs -= 1
 
         if plot:
-            plt.plot(range(len(training_loss)),np.array(training_loss),c = 'r')
-            plt.plot(range(len(testing_loss)),np.array(testing_loss),c = 'g')
+            plt.plot(range(len(training_loss)), np.array(
+                training_loss), c='r', label='Training loss')
+            plt.plot(range(len(testing_loss)), np.array(
+                testing_loss), c='g', label='Testing Loss')
+            plt.xlabel('Epochs')
+            plt.ylabel('Loss')
+            plt.legend()
             plt.show()
         print()
 
