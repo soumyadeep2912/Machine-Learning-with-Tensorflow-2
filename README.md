@@ -2,6 +2,13 @@
 A repository comprising the algorithms of Machine Learning 
 implemented on tensorflow 2
 
+| Model               	| Training Accuracy/Loss 	| Testing Accuracy/Loss 	| Dataset        	|
+|---------------------	|------------------------	|-----------------------	|----------------	|
+| Linear Regression   	| 8.35(Loss)             	| 8.21(Loss)            	| Custom dataset 	|
+| Logistic Regression 	| 85.63                  	| 76.47                 	| Candy Data     	|
+| Neural Network      	| 99.89                  	| 99.93                 	| MNIST Data     	|
+| Normal CDF          	| 93.32                  	| 91.69                 	| MNIST Data     	|
+
 Before trying, follow these steps:
 
   Install the neccessary libraries and modules
@@ -56,3 +63,4 @@ Before trying, follow these steps:
       
       For Neural Network:
       $ python3 neural_network.py
+      
