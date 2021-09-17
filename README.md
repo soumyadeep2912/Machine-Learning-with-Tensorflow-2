@@ -8,6 +8,7 @@ implemented on tensorflow 2
 | Logistic Regression 	| 85.63                  	| 76.47                 	| Candy Data     	|
 | Neural Network      	| 99.89                  	| 99.93                 	| MNIST Data     	|
 | Normal CDF          	| 93.32                  	| 91.69                 	| MNIST Data     	|
+| CNN                 	| 99.98                  	| 99.89                 	| MNIST Data(kaggle)|
 
 Before trying, follow these steps:
 
