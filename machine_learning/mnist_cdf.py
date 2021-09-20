@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_probability as tfp
+from scipy.ndimage import affine_transform
 import math
 import sys
 
@@ -11,9 +12,10 @@ tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 class Classifier:
     def __init__(self, train_data, train_labels, test_data, test_labels, epochs=500000, features=500):
-
+        train_data = np.array([self.affine_transform(i) for i in train_data])
         self.train_data = tf.cast(tf.reshape(
             (train_data/255), shape=[-1, 28*28]), dtype=tf.float32)
+        test_data = np.array([self.affine_transform(i) for i in test_data])
         self.test_data = tf.cast(tf.reshape(
             (test_data/255), shape=[-1, 28*28]), dtype=tf.float32)
         self.train_labels = tf.one_hot(
@@ -30,7 +32,7 @@ class Classifier:
         self.best_bias = tf.Variable(self.bias, dtype=tf.float32)
 
         self.epochs = epochs
-        self.optimizer = tf.keras.optimizers.Adam(epsilon=1e-5)
+        self.optimizer = tf.keras.optimizers.SGD(0.01)
         self.losses = tf.keras.losses.CategoricalCrossentropy()
         self.perceptron = self.pca(self.train_data, components=features)
 
@@ -55,13 +57,43 @@ class Classifier:
         # x = (linear - mean) / (std * math.sqrt(2))
         # return 0.5*(1 + tf.math.erf(x))
 
+    def affine_transform(self, data):
+        a = [a for a in range(28)]
+        b = [a for a in range(28)]
+
+        x, y = np.mgrid[:28, :28]
+
+        # centroid coordinates
+        x_mean = np.sum(x*data)/(np.sum(data))
+        y_mean = np.sum(y*data)/(np.sum(data))
+
+        # covariance matrix
+        u_20 = np.sum(((x-x_mean)**2)*data)
+        u_02 = np.sum(((y-y_mean)**2)*data)
+        u_11 = np.sum(((x-x_mean)*(y-y_mean))*data)
+        u_00 = np.sum(data)
+
+        corr = u_11/u_20
+        m = [[u_20/u_00, u_11/u_00], [u_11/u_00, u_02/u_00]]
+
+        # angle of rotation
+        angle = -1*0.5*np.arctan((2*m[0][1])/(m[0][0]-m[1][1]))
+
+        # rotation matrix
+        rot_mat = [[1, 0], [corr, 1]]
+
+        # offset
+        offset = [x_mean, y_mean]-np.dot(rot_mat, [14, 14])
+        final_img = affine_transform(data, rot_mat, offset=offset)
+        return final_img
+
     def train(self, plot=True):
         decline = 0
         prev_acc = 0
 
         while self.epochs != 0:
-            if decline > 8:
-                break
+            # if decline > 6:
+            #     break
 
             self.update_parameters(self.train_data, self.train_labels)
             if self.epochs % 100 == 0:
