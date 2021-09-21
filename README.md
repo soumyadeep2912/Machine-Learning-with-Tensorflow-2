@@ -7,7 +7,7 @@ implemented on tensorflow 2
 | Linear Regression   	| 8.35(Loss)             	| 8.21(Loss)            	| Custom dataset 	|
 | Logistic Regression 	| 85.63                  	| 76.47                 	| Candy Data     	|
 | Neural Network      	| 99.89                  	| 99.93                 	| MNIST Data     	|
-| Normal CDF          	| 93.32                  	| 91.69                 	| MNIST Data     	|
+| Normal CDF          	| 96.32                  	| 96.69                 	| MNIST Data     	|
 | CNN                 	| 99.98                  	| 99.89                 	| MNIST Data(kaggle)|
 
 Before trying, follow these steps:
