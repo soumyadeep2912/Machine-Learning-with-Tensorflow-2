@@ -19,11 +19,11 @@ Before trying, follow these steps:
  
   ###  Installation process :     
   ```bash
-      pip3 install tensorflow
-      pip3 install pandas
-      pip3 install numpy
-      pip3 install matplotlib
-      pip3 install sklearn
+  pip3 install tensorflow
+  pip3 install pandas
+  pip3 install numpy
+  pip3 install matplotlib
+  pip3 install sklearn
   ```
   ### Files:
    - 📗 [Math | Linear Regression](machine_learning/docs/linear_regression.pdf)
