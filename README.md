@@ -37,32 +37,7 @@ Before trying, follow these steps:
   
   -> Fire up your terminal/cmd
    
-   # 🤖 Linux :
-      
-      For Linear Regression:
-      $ python3 linear_regression.py
-      
-      For Logistic Regression:
-      $ python3 logistic_regression.py
-     
-      For Regularisation:
-      $ python3 regularisation.py
-      
-      For Neural Network:
-      $ python3 neural_network.py
-  
-  
-  # 🤖 Windows:
-  
-      For Linear Regression:
-      $ python3 linear_regression.py
-      
-      For Logistic Regression:
-      $ python3 logistic_regression.py
-      
-      For Regularisation:
-      $ python3 regularisation.py
-      
-      For Neural Network:
-      $ python3 neural_network.py
-      
+   # 🤖 Linux or Windows:
+   ```bash
+   python3 <file_name>.py
+   ```
