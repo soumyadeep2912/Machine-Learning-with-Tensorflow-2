@@ -9,6 +9,7 @@ implemented on tensorflow 2
 | Neural Network      	| 99.89                  	| 99.93                 	| MNIST Data     	|
 | Normal CDF          	| 96.32                  	| 96.69                 	| MNIST Data     	|
 | CNN                 	| 99.98                  	| 99.89                 	| MNIST Data(kaggle)|
+| SVM (linear)          | 100                     | NIL                     | Synthetic Data  |
 
 Before trying, follow these steps:
 
