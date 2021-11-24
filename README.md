@@ -35,7 +35,7 @@ Before trying, follow these steps:
    - 📗 [Math | Neural Network](machine_learning/docs/neural_network.pdf) 
    - ⚙️ [Code | Neural Network](machine_learning/neural_network.py)
   
-  -> Fire up your terminal/cmd
+  ## Fire up your terminal/cmd
    
    # 🤖 Linux or Windows:
    ```bash
