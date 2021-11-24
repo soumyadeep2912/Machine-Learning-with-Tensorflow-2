@@ -18,13 +18,13 @@ Before trying, follow these steps:
    - Run the following command in your terminal(LINUX) or cmd(WINDOWS)
  
   ###  Installation process :     
-  
-      $ pip3 install tensorflow
-      $ pip3 install pandas
-      $ pip3 install numpy
-      $ pip3 install matplotlib
-      $ pip3 install sklearn
-      
+  ```bash
+      pip3 install tensorflow
+      pip3 install pandas
+      pip3 install numpy
+      pip3 install matplotlib
+      pip3 install sklearn
+  ```
   ### Files:
    - 📗 [Math | Linear Regression](machine_learning/docs/linear_regression.pdf)
    - ⚙️ [Code | Linear Regression](machine_learning/linear_regression.py)
