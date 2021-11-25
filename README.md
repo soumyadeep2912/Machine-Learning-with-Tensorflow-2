@@ -10,6 +10,7 @@ implemented on tensorflow 2
 | Normal CDF          	| 96.32                  	| 96.69                 	| MNIST Data     	|
 | CNN                 	| 99.98                  	| 99.89                 	| MNIST Data(kaggle)|
 | SVM (linear)          | 100                     | NIL                     | Synthetic Data  |
+| SVM (RBF kernel)      | 100                     | NIL                     | Synthetic Data  |
 
 Before trying, follow these steps:
 
