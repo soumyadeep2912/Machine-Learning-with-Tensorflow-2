@@ -51,6 +51,7 @@ if __name__ == '__main__':
     mod = linear_model()
     mod.fit(train_data, train_labels, epochs=20,
             validation_data=(test_data, test_labels))
+    mod.evaluate(test_data, test_labels)
 
     i = 1
     single_image = train_data[i].reshape(28, 28, 1)
@@ -76,5 +77,5 @@ if __name__ == '__main__':
     epsilons = [0, 0.1, 0.2, 0.3, 0.4]
     for ind, elem in enumerate(epsilons):
         adv_xs = test_data + elem*noises
-        adv_xs = tf.clip_by_value(adv_xs, -1, 1)
+        # adv_xs = tf.clip_by_value(adv_xs, -1, 1)
         mod.evaluate(adv_xs,test_labels)
