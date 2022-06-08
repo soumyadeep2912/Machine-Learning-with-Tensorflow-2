@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
+import neural_structured_learning as nsl
 
 
 def linear_model(input_shape=(28, 28, 1)):
@@ -9,8 +10,6 @@ def linear_model(input_shape=(28, 28, 1)):
     flatten = tf.keras.layers.Flatten()(rescale)
     outputs = tf.keras.layers.Dense(10, activation='softmax')(flatten)
     model = tf.keras.Model(inputs=inputs, outputs=outputs)
-    loss = tf.keras.losses.CategoricalCrossentropy()
-    model.compile(loss=loss, optimizer='Adam', metrics=['accuracy'])
     return model
 
 
@@ -39,22 +38,31 @@ def create_adversarial_patterns(model, input_images, input_labels):
     return signed_grads
 
 
-
+model_seq = tf.keras.Sequential(
+    [tf.keras.Input((28, 28), name='feature'),
+    tf.keras.layers.Lambda(lambda x: x/255.0),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(10, activation='softmax')]
+)
 
 if __name__ == '__main__':
     (train_data, train_labels), (test_data,
                                  test_labels) = tf.keras.datasets.mnist.load_data()
+    print(train_data.shape)
 
     train_labels = tf.one_hot(train_labels, depth=10, dtype=tf.float32)
     test_labels = tf.one_hot(test_labels, depth=10, dtype=tf.float32)
 
-    mod = linear_model()
-    mod.fit(train_data, train_labels, epochs=20,
+    # mod = linear_model()
+    mod = model_seq
+    loss = tf.keras.losses.CategoricalCrossentropy()
+    mod.compile(loss=loss, optimizer='Adam', metrics=['accuracy'])
+    mod.fit(train_data, train_labels, epochs=5,
             validation_data=(test_data, test_labels))
     mod.evaluate(test_data, test_labels)
 
     i = 1
-    single_image = train_data[i].reshape(28, 28, 1)
+    single_image = train_data[i].reshape(28, 28)
     image_probs = mod.predict(tf.expand_dims(single_image, axis=0))
     single_label = tf.one_hot(0, image_probs.shape[-1])
     single_label = tf.reshape(single_label, (1, image_probs.shape[-1]))
@@ -79,3 +87,16 @@ if __name__ == '__main__':
         adv_xs = test_data + elem*noises
         # adv_xs = tf.clip_by_value(adv_xs, -1, 1)
         mod.evaluate(adv_xs,test_labels)
+        
+    # nsl regularization
+    adv_config = nsl.configs.make_adv_reg_config(multiplier=0.2, adv_step_size=0.05)
+    adv_model = nsl.keras.AdversarialRegularization(mod, adv_config=adv_config)
+    
+    adv_model.compile(optimizer='Adam',
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+    adv_model.fit({'feature': train_data, 'label': train_labels}, epochs=5)
+    adv_model.evaluate({'feature': test_data, 'label': test_labels})
+    adv_model.evaluate({'feature': adv_xs, 'label': test_labels})
+    
+
