@@ -1,7 +1,5 @@
-import pandas as pd
 import numpy as np
 import tensorflow as tf
-import sklearn.model_selection as skmdl
 
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -37,13 +35,10 @@ def model():
 
 
 if __name__ == '__main__':
-    df = pd.read_csv("archive/train.csv")
-    labels = np.array(df.pop('label'))
-    data = np.array(df).reshape(-1, 28, 28, 1).astype('float32')/255.0
+    (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
 
-    X_train, X_test, y_train, y_test = skmdl.train_test_split(
-        data, labels, test_size=0.2, random_state=42)
-
+    X_train = X_train.reshape((60000,28,28,1))
+    X_test = X_test.reshape((10000,28,28,1))
     y_train = tf.squeeze(tf.one_hot(y_train, depth=10))
     y_test = tf.squeeze(tf.one_hot(y_test, depth=10))
 
