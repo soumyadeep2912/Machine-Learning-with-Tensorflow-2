@@ -46,4 +46,9 @@ Trainable params: 2,813,443 \
 Non-trainable params: 2
 _________________________________________________________________
 
-Dataset: (UTK_Face Dataset)[https://www.kaggle.com/datasets/jangedoo/utkface-new]
+Dataset: (UTK_Face Dataset)[https://drive.google.com/drive/folders/0BxYys69jI14kU0I1YUQyY1ZDRUE?resourcekey=0-01Pth1hq20K4kuGVkp3oBw]
+
+# Steps to use it:
+- Download the **UTKFace.tar.gz**
+- Extract the tar file.
+- Place it in the same directory where *dataset.py* is placed.
