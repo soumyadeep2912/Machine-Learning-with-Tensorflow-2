@@ -122,7 +122,7 @@ if __name__ == '__main__':
     mus = tf.Variable([[1., 1.], [1., 1.], [1., 1.]])
     scales = tf.Variable([[1., 1.], [1., 1.], [1., 1.]])
     opt = tf.keras.optimizers.Adam(learning_rate=0.005)
-    epochs = 5000
+    epochs = 5000*2
     nlls, mu_arr, scales_arr, class_conditionals = \
         learn_parameters(x_train, y_train, mus, scales, opt, epochs)
 
