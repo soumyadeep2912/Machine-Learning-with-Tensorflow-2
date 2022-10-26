@@ -22,7 +22,7 @@ bias_init = tf.keras.initializers.Constant(value=0.2)
 
 def process_images(image, label):
     image = tf.image.per_image_standardization(image)
-    image = tf.image.resize(image, (64*2, 64*2))
+    image = tf.image.resize(image, (64, 64))
     return image, (label, label, label)
 
 
@@ -58,12 +58,10 @@ def inception_module(x,
     return output
 
 def InceptionNet():
-    input_layer = tf.keras.layers.Input(shape=(128, 128, 3))
+    input_layer = tf.keras.layers.Input(shape=(64, 64, 3))
     x = tf.keras.layers.Conv2D(64, (7, 7), padding='same', strides=(2, 2), activation='relu', name='conv_1_7x7/2', kernel_initializer=kernel_init, bias_initializer=bias_init)(input_layer)
     x = tf.keras.layers.MaxPool2D((3, 3), padding='same', strides=(2, 2), name='max_pool_1_3x3/2')(x)
     x = tf.keras.layers.Conv2D(64, (1, 1), padding='same', strides=(1, 1), activation='relu', name='conv_2a_3x3/1')(x)
-    x = tf.keras.layers.Conv2D(192, (3, 3), padding='same', strides=(1, 1), activation='relu', name='conv_2b_3x3/1')(x)
-    x = tf.keras.layers.MaxPool2D((3, 3), padding='same', strides=(2, 2), name='max_pool_2_3x3/2')(x)
     x = inception_module(x,
                          filters_1x1=64,
                          filters_3x3_reduce=96,
@@ -72,14 +70,6 @@ def InceptionNet():
                          filters_5x5=32,
                          filters_pool_proj=32,
                          name='inception_3a')
-    x = inception_module(x,
-                         filters_1x1=128,
-                         filters_3x3_reduce=128,
-                         filters_3x3=192,
-                         filters_5x5_reduce=32,
-                         filters_5x5=96,
-                         filters_pool_proj=64,
-                         name='inception_3b')
     x = tf.keras.layers.MaxPool2D((3, 3), padding='same', strides=(2, 2), name='max_pool_3_3x3/2')(x)
     x = inception_module(x,
                          filters_1x1=192,
@@ -111,16 +101,6 @@ def InceptionNet():
                          filters_5x5=64,
                          filters_pool_proj=64,
                          name='inception_4c')
-    x = inception_module(x,
-                         filters_1x1=112,
-                         filters_3x3_reduce=144,
-                         filters_3x3=288,
-                         filters_5x5_reduce=32,
-                         filters_5x5=64,
-                         filters_pool_proj=64,
-                         name='inception_4d')
-
-
     x2 = tf.keras.layers.AveragePooling2D((5, 5), strides=3)(x)
     x2 = tf.keras.layers.Conv2D(128, (1, 1), padding='same', activation='relu')(x2)
     x2 = tf.keras.layers.Flatten()(x2)
@@ -144,14 +124,6 @@ def InceptionNet():
                          filters_5x5=128,
                          filters_pool_proj=128,
                          name='inception_5a')
-    x = inception_module(x,
-                         filters_1x1=384,
-                         filters_3x3_reduce=192,
-                         filters_3x3=384,
-                         filters_5x5_reduce=48,
-                         filters_5x5=128,
-                         filters_pool_proj=128,
-                         name='inception_5b')
     x = tf.keras.layers.GlobalAveragePooling2D(name='avg_pool_5_3x3/1')(x)
     x = tf.keras.layers.Dropout(0.4)(x)
     x = tf.keras.layers.Dense(10, activation='softmax', name='output')(x)
@@ -162,7 +134,6 @@ def InceptionNet():
 if __name__ == '__main__':
     model = InceptionNet()
     model.summary()
-    input()
 
     (train_images, train_labels), (test_images,
                                    test_labels) = tf.keras.datasets.cifar10.load_data()
