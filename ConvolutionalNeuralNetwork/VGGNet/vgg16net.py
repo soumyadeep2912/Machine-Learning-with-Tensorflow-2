@@ -68,6 +68,7 @@ def VGG16():
 if __name__ == '__main__':
     model = VGG16()
     model.summary()
+    tf.keras.utils.plot_model(model,to_file = VGG16.__name__+'.png')
 
     (train_images, train_labels), (test_images,
                                    test_labels) = tf.keras.datasets.cifar10.load_data()

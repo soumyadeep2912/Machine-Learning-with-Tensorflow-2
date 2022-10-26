@@ -96,6 +96,7 @@ def ResNet34(shape=(64, 64, 3), classes=10):
 if __name__ == '__main__':
     model = ResNet34()
     model.summary()
+    tf.keras.utils.plot_model(model,to_file = ResNet34.__name__+'.png')
 
     (train_images, train_labels), (test_images,
                                    test_labels) = tf.keras.datasets.cifar10.load_data()

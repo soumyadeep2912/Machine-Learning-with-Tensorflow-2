@@ -147,6 +147,7 @@ def InceptionNet():
 if __name__ == '__main__':
     model = InceptionNet()
     model.summary()
+    tf.keras.utils.plot_model(model,to_file = InceptionNet.__name__+'.png')
 
     (train_images, train_labels), (test_images,
                                    test_labels) = tf.keras.datasets.cifar10.load_data()

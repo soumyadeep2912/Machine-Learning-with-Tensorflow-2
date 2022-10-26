@@ -108,6 +108,7 @@ if __name__ == '__main__':
     model.compile(loss='sparse_categorical_crossentropy',
                   optimizer=tf.optimizers.SGD(lr=0.001), metrics=['accuracy'])
     model.summary()
+    tf.keras.utils.plot_model(model,to_file = alexnet_model.__name__+'.png')
     model.fit(train_ds,
               epochs=50,
               validation_data=validation_ds,

@@ -128,6 +128,7 @@ def process_images(image, label):
 if __name__ == '__main__':
     model = XCeption()
     model.summary()
+    tf.keras.utils.plot_model(model,to_file = XCeption.__name__+'.png')
 
     (train_images, train_labels), (test_images,
                                    test_labels) = tf.keras.datasets.cifar10.load_data()
