@@ -5,20 +5,23 @@ A repository comprising the algorithms of Machine Learning implemented on tensor
 Machine Learning Algorithms
 ├── AdversarialAttacks
 │   └── vgg19_nsl2
-├── Age detection
+├── Applications
+│   ├── Age detection
+│   ├── DeepDream
+│   └── pipeline_design
 ├── ArtificialNeuralNetwork
 ├── ConvolutionalNeuralNetwork
 │   ├── AlexNet
 │   ├── DenseNet
 │   ├── FasterRCNN
-│   ├── GeneticCNN            # will be implemented soon
+│   ├── GeneticCNN
 │   ├── InceptionNet
 │   ├── Lenet5
+│   ├── MetaQNN
 │   ├── MobileNet
 │   ├── ResNet
 │   ├── VGGNet
 │   └── XceptionNet
-├── DeepDream
 ├── ElasticWeightConsolidation
 ├── GaussianCDF
 ├── GraphNeuralNetwork
@@ -26,10 +29,10 @@ Machine Learning Algorithms
 ├── LogisticRegression
 ├── Miscellaneous
 ├── NaiveBayesClassifier
-├── pipeline_design
 ├── RecurrentNeuralNetwork
 │   └── Bidirectional_RNN
 └── SVM
+
 
 ```
 
@@ -39,7 +42,7 @@ Before trying, follow these steps:
    - Activate your *virtualenv*
    - Run the following command in your terminal(LINUX) or cmd(WINDOWS)
  
-  ###  Installation process :     
+  ###  Installation process :
   ```bash
   pip3 install tensorflow-gpu #if you've an nvidia-gpu with cuda support
   pip3 install pandas
