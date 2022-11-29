@@ -10,6 +10,8 @@ Machine Learning Algorithms
 │   ├── DeepDream
 │   └── pipeline_design
 ├── ArtificialNeuralNetwork
+│   ├── DeepNeuralNetwork
+│   └── SiameseNetwork
 ├── ConvolutionalNeuralNetwork
 │   ├── AlexNet
 │   ├── DenseNet
@@ -20,6 +22,9 @@ Machine Learning Algorithms
 │   ├── MetaQNN
 │   ├── MobileNet
 │   ├── ResNet
+│   ├── ResNext
+│   ├── SENet
+│   ├── StyleTransfer
 │   ├── VGGNet
 │   └── XceptionNet
 ├── ElasticWeightConsolidation
@@ -27,11 +32,13 @@ Machine Learning Algorithms
 ├── GraphNeuralNetwork
 ├── LinearRegression
 ├── LogisticRegression
+├── markdown_edits
 ├── Miscellaneous
 ├── NaiveBayesClassifier
 ├── RecurrentNeuralNetwork
 │   └── Bidirectional_RNN
 └── SVM
+
 
 
 ```
